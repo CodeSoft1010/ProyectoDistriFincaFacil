@@ -1,16 +1,29 @@
 import express from 'express';
 import Myroutes from '../routes/routes.mjs';
+import AuthRoutes from '../routes/authroute.mjs';
+import mongoose from 'mongoose';
 
-const app = new express();
-//inicializar el puerto
+const app = express();
 const PORT = 8080;
 
 app.use(express.json());
 
-//unir con las rutas
+// Unir rutas
 app.use('/', Myroutes);
 
-//inicializar el servidor
+app.use('/api', AuthRoutes); // ruta de login
+
+mongoose.connect('mongodb://127.0.0.1:27017/fincaFacil') 
+  .then(() => {
+    console.log('✅ Conexión a MongoDB exitosa');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('❌ Error al conectar a MongoDB:', error.message);
+  });
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
