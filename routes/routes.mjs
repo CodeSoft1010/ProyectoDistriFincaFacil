@@ -1,5 +1,5 @@
 import express from 'express';
-import { welcome } from '../control/control.mjs';
+import { welcome, loginUser } from '../control/controlLogin.mjs';
 
 
 const router = express.Router();
@@ -7,5 +7,8 @@ const router = express.Router();
 
 // Ruta principal
 router.get('/', welcome);
+router.post('/login', loginUser); // 👈 Esta es la ruta que usa el formulario
+
+
 
 export default router;
