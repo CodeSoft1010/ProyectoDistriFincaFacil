@@ -22,6 +22,7 @@ export const loginUser = async (req, res) => {
     res.json({
       mensaje: `¡Bienvenido ${user.nombre}! Tu rol es: ${user.rol}`,
       nombre: user.nombre,
+      usuario: user.usuario,
       rol: user.rol
     });
 

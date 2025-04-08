@@ -1,10 +1,10 @@
 // createUsers.js
-import '../data/user-db.js'; // Asegura que se conecte a MongoDB
+// createUsers.js
+import '../data/user-db.js'; // conecta a MongoDB Atlas
 import User from '../models/User.mjs';
 
-
 async function crearUsuarios() {
-  await User.deleteMany(); // Limpia todo por ahora (solo para pruebas)
+  await User.deleteMany(); // ⚠️ Elimina todos los usuarios, cuidado si ya tienes datos
 
   const usuarios = [
     { nombre: 'Juan', usuario: 'admin', contraseña: 'admin', rol: 'dueño' },

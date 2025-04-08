@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenida</title>
+</head>
+<body>
+  
+    <h1 id="mensaje"></h1>
+
+    <script>
+      const nombre = localStorage.getItem('nombre');
+      const usuario = localStorage.getItem('usuario');
+      const rol = localStorage.getItem('rol');
+   
+      if (nombre && usuario && rol) {
+        document.getElementById('mensaje').innerText =
+          `Bienvenido ${nombre} (@${usuario}), tu rol es: ${rol}`;
+      } else {
+        document.getElementById('mensaje').innerText =
+          'No hay sesión iniciada. Por favor vuelve a iniciar sesión.';
+          console.log(nombre, usuario, rol);
+      }
+    </script>
+    
+
+</body>
+</html>

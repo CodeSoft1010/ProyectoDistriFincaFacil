@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Ruta principal
 router.get('/', welcome);
-router.post('/login', loginUser); // 👈 Esta es la ruta que usa el formulario
+router.post('/login', loginUser); //  Esta es la ruta que usa el formulario
 
 
 

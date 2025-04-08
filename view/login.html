@@ -60,19 +60,35 @@
     async function iniciarSesion() {
       const usuario = document.getElementById('usuario').value;
       const contraseña = document.getElementById('contraseña').value;
-
+  
       try {
         const res = await fetch('/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ usuario, contraseña })
         });
-
+  
         const data = await res.json();
         const mensajeDiv = document.getElementById('mensaje');
-
+  
         if (res.ok) {
-          mensajeDiv.innerHTML = `<strong>${data.mensaje}</strong>`;
+          // Guardar datos en localStorage
+          localStorage.setItem('usuario', data.usuario);
+          localStorage.setItem('nombre', data.nombre);
+          localStorage.setItem('rol', data.rol);
+
+          console.log('Guardado en localStorage:');
+          console.log('usuario:', localStorage.getItem('usuario'));
+          console.log('nombre:', localStorage.getItem('nombre'));
+          console.log('rol:', localStorage.getItem('rol'));
+
+          
+          // Redirigir al nuevo puerto
+        
+          setTimeout(() => {
+            window.location.href = 'http://localhost:8081/bienvenida.html';
+          }, 200); // 200 milisegundos
+
         } else {
           mensajeDiv.innerHTML = `<span style="color:red;">${data.mensaje}</span>`;
         }
@@ -82,5 +98,6 @@
       }
     }
   </script>
+  
 </body>
 </html>
