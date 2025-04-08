@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Animales</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        .form-section {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="text"], button {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+<h1>Gestión de Animales</h1>
+
+<div class="form-section">
+    <h2>Seleccionar Chivo</h2>
+    <label for="selectChivos">Elige un chivo:</label>
+    <select id="selectChivos"></select>
+    <button onclick="verDetalles()">Ver Detalles</button>
+</div>
+
+<div id="detallesChivo" class="form-section" style="display: none;">
+    <h2>Detalles del Chivo</h2>
+    <p><strong>Nombre:</strong> <span id="nombreChivo"></span></p>
+    <p><strong>Código:</strong> <span id="codigoChivo"></span></p>
+    <p><strong>Sexo:</strong> <span id="sexoChivo"></span></p>
+    <p><strong>Raza:</strong> <span id="razaChivo"></span></p>
+    <p><strong>Peso:</strong> <span id="pesoChivo"></span></p>
+    <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimientoChivo"></span></p>
+    <p><strong>Fecha de Ingreso:</strong> <span id="fechaIngresoChivo"></span></p>
+    <p><strong>Salud:</strong> <span id="saludChivo"></span></p>
+    <p><strong>Estado Reproductivo:</strong> <span id="estadoReproductivoChivo"></span></p>
+    <p><strong>Observaciones:</strong> <span id="observacionesChivo"></span></p>
+    <p id="vacunaChivo" style="display: none;"><strong>Vacuna:</strong> <span></span></p>
+    <p id="enfermedadChivo" style="display: none;"><strong>Enfermedad:</strong> <span></span></p>
+    <button id="btnSaludAnimal" style="display: none;" onclick="redirigirSaludAnimal()">Ver Información de Salud</button>
+    <button id="btnReproduccion" style="display: none;" onclick="redirigirReproduccion()">Ver Estado de Embarazo</button>
+</div>
+
+<script>
+    let chivos = [];
+
+    // Cargar los chivos desde el backend
+    async function cargarChivos() {
+        try {
+            const response = await fetch('/cargarChivos');
+            chivos = await response.json();
+
+            const select = document.getElementById('selectChivos');
+            select.innerHTML = ''; // Limpia opciones anteriores
+
+            chivos.forEach((chivo, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${chivo.nombre} (${chivo.codigo})`;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar los chivos:', error);
+        }
+    }
+
+    function verDetalles() {
+        const index = document.getElementById('selectChivos').value;
+        const chivo = chivos[index];
+
+        if (!chivo) return;
+
+        document.getElementById('nombreChivo').textContent = chivo.nombre || '';
+        document.getElementById('codigoChivo').textContent = chivo.codigo || '';
+        document.getElementById('sexoChivo').textContent = chivo.sexo || '';
+        document.getElementById('razaChivo').textContent = chivo.raza || '';
+        document.getElementById('pesoChivo').textContent = chivo.peso || '';
+        document.getElementById('fechaNacimientoChivo').textContent = chivo.fechaNacimiento || '';
+        document.getElementById('fechaIngresoChivo').textContent = chivo.fechaIngreso || '';
+        document.getElementById('saludChivo').textContent = chivo.salud || '';
+        document.getElementById('estadoReproductivoChivo').textContent = chivo.estadoReproductivo || '';
+        document.getElementById('observacionesChivo').textContent = chivo.observaciones || '';
+
+        // Mostrar u ocultar vacuna
+        if (chivo.vacuna) {
+            const vacunaElem = document.getElementById('vacunaChivo');
+            vacunaElem.style.display = 'block';
+            vacunaElem.querySelector('span').textContent = chivo.vacuna;
+        } else {
+            document.getElementById('vacunaChivo').style.display = 'none';
+        }
+
+        // Mostrar u ocultar enfermedad
+        if (chivo.enfermedad) {
+            const enfermedadElem = document.getElementById('enfermedadChivo');
+            enfermedadElem.style.display = 'block';
+            enfermedadElem.querySelector('span').textContent = chivo.enfermedad;
+        } else {
+            document.getElementById('enfermedadChivo').style.display = 'none';
+        }
+
+        // Mostrar botones condicionales
+        document.getElementById('btnSaludAnimal').style.display = chivo.salud === 'enfermo' ? 'inline-block' : 'none';
+        document.getElementById('btnReproduccion').style.display = chivo.gestante === true ? 'inline-block' : 'none';
+
+        document.getElementById('detallesChivo').style.display = 'block';
+    }
+
+    function redirigirSaludAnimal() {
+        const index = document.getElementById('selectChivos').value;
+        const chivo = chivos[index];
+        window.location.href = `/salud/${chivo.codigo}`;
+    }
+
+    function redirigirReproduccion() {
+        const index = document.getElementById('selectChivos').value;
+        const chivo = chivos[index];
+        window.location.href = `/reproduccion/${chivo.codigo}`;
+    }
+
+    window.onload = cargarChivos;
+</script>
+</body>
+</html>
