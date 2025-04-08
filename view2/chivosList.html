@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -63,7 +64,7 @@
 
     async function cargarChivos() {
       try {
-        const res = await fetch('/cargarChivos'); // Cambia la URL según tu API
+        const res = await fetch('/cargarChivos'); //IMPORTATNE
         chivos = await res.json();
         mostrarChivos(chivos);
       } catch (err) {
