@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Salud Animal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Información de Salud Animal</h1>
+
+  <div class="section" id="vacunasSection" style="display: none;">
+    <h2>Vacunas</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Dosis</th>
+          <th>Frecuencia</th>
+          <th>Vía de Administración</th>
+          <th>Eficacia</th>
+        </tr>
+      </thead>
+      <tbody id="tablaVacunas">
+        <!-- Las filas se generarán dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section" id="enfermedadesSection" style="display: none;">
+    <h2>Enfermedades</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Agente Causal</th>
+          <th>Síntomas Clínicos</th>
+          <th>Modo de Transmisión</th>
+          <th>Impacto en la Producción</th>
+          <th>Prevención</th>
+          <th>Tratamiento</th>
+        </tr>
+      </thead>
+      <tbody id="tablaEnfermedades">
+        <!-- Las filas se generarán dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Datos de ejemplo para vacunas
+    const vacunas = [
+  { nombre: 'Vacuna Clostridial', dosis: '5 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '95%' },
+  { nombre: 'Vacuna contra Brucelosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Intramuscular', eficacia: '90%' },
+  { nombre: 'Vacuna contra Carbunco Sintomático', dosis: '3 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '92%' },
+  { nombre: 'Vacuna contra Pasteurelosis', dosis: '4 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '88%' },
+  { nombre: 'Vacuna contra Ectima Contagioso', dosis: '1 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '85%' },
+  { nombre: 'Vacuna contra Lengua Azul', dosis: '2 ml', frecuencia: 'Anual', viaAdministracion: 'Intramuscular', eficacia: '89%' },
+  { nombre: 'Vacuna contra Rabia', dosis: '1 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '98%' },
+  { nombre: 'Vacuna contra Leptospirosis', dosis: '3 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '87%' },
+  { nombre: 'Vacuna contra Paratuberculosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '90%' }
+];
+
+    // Datos de ejemplo para enfermedades
+    const enfermedades = [
+  { nombre: 'Enterotoxemia', agenteCausal: 'Clostridium perfringens', sintomasClinicos: 'Diarrea, letargo', modoTransmision: 'Alimentos contaminados', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+  { nombre: 'Brucelosis', agenteCausal: 'Brucella spp.', sintomasClinicos: 'Abortos, infertilidad', modoTransmision: 'Contacto con fluidos', impactoProduccion: 'Reducción de fertilidad', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+  { nombre: 'Carbunco Sintomático', agenteCausal: 'Clostridium chauvoei', sintomasClinicos: 'Inflamación muscular', modoTransmision: 'Heridas abiertas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+  { nombre: 'Pasteurelosis', agenteCausal: 'Pasteurella multocida', sintomasClinicos: 'Dificultad respiratoria', modoTransmision: 'Contacto directo', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+  { nombre: 'Ectima Contagioso', agenteCausal: 'Parapoxvirus', sintomasClinicos: 'Lesiones cutáneas', modoTransmision: 'Contacto directo', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Tratamiento tópico' },
+  { nombre: 'Lengua Azul', agenteCausal: 'Orbivirus', sintomasClinicos: 'Fiebre alta', modoTransmision: 'Picaduras de insectos', impactoProduccion: 'Pérdida de peso', prevencion: 'Control de vectores', tratamiento: 'Sintomático' },
+  { nombre: 'Rabia', agenteCausal: 'Lyssavirus', sintomasClinicos: 'Comportamiento agresivo', modoTransmision: 'Mordeduras', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+  { nombre: 'Leptospirosis', agenteCausal: 'Leptospira spp.', sintomasClinicos: 'Ictericia', modoTransmision: 'Agua contaminada', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+  { nombre: 'Paratuberculosis', agenteCausal: 'Mycobacterium avium', sintomasClinicos: 'Diarrea crónica', modoTransmision: 'Contacto con heces', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+  { nombre: 'Antrax', agenteCausal: 'Bacillus anthracis', sintomasClinicos: 'Hemorragias, fiebre alta', modoTransmision: 'Contacto con esporas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' }
+];
+
+    // Función para cargar las vacunas en la tabla
+    const cargarVacunas = (vacunaNombre) => {
+      const tablaVacunas = document.getElementById('tablaVacunas');
+      tablaVacunas.innerHTML = ''; // Limpiar tabla
+      const vacunasFiltradas = vacunas.filter(v => v.nombre === vacunaNombre);
+      if (vacunasFiltradas.length > 0) {
+        vacunasFiltradas.forEach(vacuna => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${vacuna.nombre}</td>
+            <td>${vacuna.dosis}</td>
+            <td>${vacuna.frecuencia}</td>
+            <td>${vacuna.viaAdministracion}</td>
+            <td>${vacuna.eficacia}</td>
+          `;
+          tablaVacunas.appendChild(fila);
+        });
+        document.getElementById('vacunasSection').style.display = 'block';
+      }
+    };
+
+    // Función para cargar las enfermedades en la tabla
+    const cargarEnfermedades = (enfermedadNombre) => {
+      const tablaEnfermedades = document.getElementById('tablaEnfermedades');
+      tablaEnfermedades.innerHTML = ''; // Limpiar tabla
+      const enfermedadesFiltradas = enfermedades.filter(e => e.nombre === enfermedadNombre);
+      if (enfermedadesFiltradas.length > 0) {
+        enfermedadesFiltradas.forEach(enfermedad => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${enfermedad.nombre}</td>
+            <td>${enfermedad.agenteCausal}</td>
+            <td>${enfermedad.sintomasClinicos}</td>
+            <td>${enfermedad.modoTransmision}</td>
+            <td>${enfermedad.impactoProduccion}</td>
+            <td>${enfermedad.prevencion}</td>
+            <td>${enfermedad.tratamiento}</td>
+          `;
+          tablaEnfermedades.appendChild(fila);
+        });
+        document.getElementById('enfermedadesSection').style.display = 'block';
+      }
+    };
+
+    // Obtener parámetros de la URL
+    const params = new URLSearchParams(window.location.search);
+    const vacuna = params.get('vacuna');
+    const enfermedad = params.get('enfermedad');
+
+    // Cargar datos según los parámetros
+    document.addEventListener('DOMContentLoaded', () => {
+      if (vacuna) {
+        cargarVacunas(vacuna);
+      }
+      if (enfermedad) {
+        cargarEnfermedades(enfermedad);
+      }
+    });
+  </script>
+</body>
+</html>

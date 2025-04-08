@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reproducción</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .form-section {
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="number"] {
+      width: 100px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Información de Reproducción</h1>
+
+  <div>
+    <h2>Detalles Generales</h2>
+    <p><strong>Tiempo de Embarazo:</strong> <span id="tiempoEmbarazo"></span></p>
+    <h3>Recomendaciones:</h3>
+    <ul id="recomendaciones"></ul>
+    <h3>Alimentos:</h3>
+    <ul id="alimentos"></ul>
+    <h3>Cuidados:</h3>
+    <ul id="cuidados"></ul>
+  </div>
+
+  <div class="form-section">
+    <h2>Registrar Nacimientos</h2>
+    <form id="formNacimientos">
+      <label for="machos">Número de machos:</label>
+      <input type="number" id="machos" name="machos" min="0" required>
+      
+      <label for="hembras">Número de hembras:</label>
+      <input type="number" id="hembras" name="hembras" min="0" required>
+      
+      <button type="submit">Registrar</button>
+    </form>
+  </div>
+
+  <div class="form-section">
+    <h2>Historial de Nacimientos</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Machos</th>
+          <th>Hembras</th>
+          <th>Total Nacidos</th>
+        </tr>
+      </thead>
+      <tbody id="historialNacimientos">
+        <!-- Las filas se generarán dinámicamente -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Datos de ejemplo (pueden ser reemplazados con datos reales desde un backend)
+    const reproduccion = {
+      tiempoEmbarazo: '150 días (aproximadamente 5 meses)',
+      recomendaciones: [
+        'Proporcionar un ambiente limpio y tranquilo.',
+        'Evitar el estrés durante el embarazo.',
+        'Realizar chequeos veterinarios regulares.'
+      ],
+      alimentos: [
+        'Forraje de buena calidad.',
+        'Concentrados ricos en proteínas.',
+        'Suplementos minerales y vitamínicos.',
+        'Agua limpia y fresca.'
+      ],
+      cuidados: [
+        'Asegurar suficiente espacio para moverse.',
+        'Mantener un calendario de vacunación actualizado.',
+        'Observar signos de parto inminente.',
+        'Preparar un área limpia para el parto.'
+      ],
+      nacimientos: []
+    };
+
+    // Cargar datos iniciales
+    document.getElementById('tiempoEmbarazo').innerText = reproduccion.tiempoEmbarazo;
+    reproduccion.recomendaciones.forEach(rec => {
+      const li = document.createElement('li');
+      li.innerText = rec;
+      document.getElementById('recomendaciones').appendChild(li);
+    });
+    reproduccion.alimentos.forEach(alimento => {
+      const li = document.createElement('li');
+      li.innerText = alimento;
+      document.getElementById('alimentos').appendChild(li);
+    });
+    reproduccion.cuidados.forEach(cuidado => {
+      const li = document.createElement('li');
+      li.innerText = cuidado;
+      document.getElementById('cuidados').appendChild(li);
+    });
+
+    // Registrar nacimientos
+    document.getElementById('formNacimientos').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const machos = parseInt(document.getElementById('machos').value);
+      const hembras = parseInt(document.getElementById('hembras').value);
+      const totalNacidos = machos + hembras;
+
+      // Agregar al historial
+      reproduccion.nacimientos.push({ machos, hembras, totalNacidos });
+
+      // Actualizar tabla
+      const fila = document.createElement('tr');
+      fila.innerHTML = `
+        <td>${machos}</td>
+        <td>${hembras}</td>
+        <td>${totalNacidos}</td>
+      `;
+      document.getElementById('historialNacimientos').appendChild(fila);
+
+      // Limpiar formulario
+      document.getElementById('formNacimientos').reset();
+    });
+  </script>
+</body>
+</html>

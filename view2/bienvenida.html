@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Animales</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .form-section {
+      margin-top: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    select, input[type="text"], button {
+      padding: 10px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gestión de Animales</h1>
+
+  <div class="form-section">
+    <h2>Seleccionar Chivo</h2>
+    <label for="selectChivos">Elige un chivo:</label>
+    <select id="selectChivos">
+      <!-- Opciones generadas dinámicamente -->
+    </select>
+    <button onclick="verDetalles()">Ver Detalles</button>
+  </div>
+
+  <div id="detallesChivo" class="form-section" style="display: none;">
+    <h2>Detalles del Chivo</h2>
+    <p><strong>Nombre:</strong> <span id="nombreChivo"></span></p>
+    <p><strong>Código:</strong> <span id="codigoChivo"></span></p>
+    <p><strong>Sexo:</strong> <span id="sexoChivo"></span></p>
+    <p><strong>Raza:</strong> <span id="razaChivo"></span></p>
+    <p><strong>Peso:</strong> <span id="pesoChivo"></span></p>
+    <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimientoChivo"></span></p>
+    <p><strong>Fecha de Ingreso:</strong> <span id="fechaIngresoChivo"></span></p>
+    <p><strong>Salud:</strong> <span id="saludChivo"></span></p>
+    <p><strong>Estado Reproductivo:</strong> <span id="estadoReproductivoChivo"></span></p>
+    <p><strong>Observaciones:</strong> <span id="observacionesChivo"></span></p>
+    <p id="vacunaChivo" style="display: none;"><strong>Vacuna:</strong> <span></span></p>
+    <p id="enfermedadChivo" style="display: none;"><strong>Enfermedad:</strong> <span></span></p>
+    <button id="btnSaludAnimal" style="display: none;" onclick="redirigirSaludAnimal()">Ver Información de Salud</button>
+    <button id="btnReproduccion" style="display: none;" onclick="redirigirReproduccion()">Ver Estado de Embarazo</button>
+  </div>
+
+  <script>
+    const chivos = [
+      { nombre: 'Copo de Nieve', codigo: 'CHV001', sexo: 'hembra', raza: 'Alpina', peso: 45, fechaNacimiento: '2022-03-15', fechaIngreso: '2022-06-01', salud: 'optimo', gestante: false, estadoReproductivo: 'vacía', observaciones: 'Chivo saludable y activo.', vacuna: 'Vacuna Clostridial' },
+      { nombre: 'Trueno', codigo: 'CHV002', sexo: 'macho', raza: 'Boer', peso: 60, fechaNacimiento: '2021-11-20', fechaIngreso: '2022-01-10', salud: 'optimo', gestante: false, estadoReproductivo: 'desconocido', observaciones: 'Buen reproductor, comportamiento dominante.', vacuna: 'Vacuna contra Brucelosis' },
+      { nombre: 'Luna', codigo: 'CHV003', sexo: 'hembra', raza: 'Saanen', peso: 38, fechaNacimiento: '2023-01-05', fechaIngreso: '2023-03-12', salud: 'optimo', gestante: false, estadoReproductivo: 'vacía', observaciones: 'En tratamiento por parásitos.', vacuna: 'Vacuna contra Carbunco Sintomático' },
+      { nombre: 'Rayo', codigo: 'CHV004', sexo: 'macho', raza: 'Criolla', peso: 67, fechaNacimiento: '2020-09-30', fechaIngreso: '2021-02-15', salud: 'optimo', gestante: false, estadoReproductivo: 'desconocido', observaciones: 'Ágil y fuerte, ideal para trabajo.', vacuna: 'Vacuna contra Pasteurelosis' },
+      { nombre: 'Estrella', codigo: 'CHV005', sexo: 'hembra', raza: 'Alpina', peso: 42, fechaNacimiento: '2022-05-10', fechaIngreso: '2022-08-25', salud: 'optimo', gestante: true, estadoReproductivo: 'preñada', observaciones: 'Segunda gestación confirmada.', estado: 'Embarazada', vacuna: 'Vacuna contra Ectima Contagioso' },
+      { nombre: 'Sol', codigo: 'CHV007', sexo: 'hembra', raza: 'Boer', peso: 36, fechaNacimiento: '2023-06-01', fechaIngreso: '2023-08-15', salud: 'optimo', gestante: false, estadoReproductivo: 'vacía', observaciones: 'Chivita joven, aún no se ha preñado.', vacuna: 'Vacuna contra Lengua Azul' },
+      { nombre: 'Relámpago', codigo: 'CHV008', sexo: 'macho', raza: 'Criolla', peso: 55, fechaNacimiento: '2022-08-17', fechaIngreso: '2022-11-01', salud: 'optimo', gestante: false, estadoReproductivo: 'desconocido', observaciones: 'Tratamiento en curso por tos persistente.', vacuna: 'Vacuna contra Rabia' },
+      { nombre: 'Brisa', codigo: 'CHV009', sexo: 'hembra', raza: 'Alpina', peso: 40, fechaNacimiento: '2022-09-21', fechaIngreso: '2022-12-01', salud: 'sano', gestante: false, estadoReproductivo: 'vacía', observaciones: 'Comportamiento tranquilo.', vacuna: 'Vacuna contra Leptospirosis' },
+      { nombre: 'Tormenta', codigo: 'CHV010', sexo: 'hembra', raza: 'Boer', peso: 50, fechaNacimiento: '2021-12-12', fechaIngreso: '2022-03-01', salud: 'sano', gestante: true, estadoReproductivo: 'preñada', observaciones: 'Gestación avanzada, se espera parto en 2 semanas.', estado: 'Embarazada', vacuna: 'Vacuna contra Paratuberculosis' },
+      { nombre: 'Chivo Enfermo 1', codigo: 'CHV011', sexo: 'macho', raza: 'Criolla', peso: 50, fechaNacimiento: '2021-01-01', fechaIngreso: '2021-03-01', salud: 'enfermo', enfermedad: 'Enterotoxemia', observaciones: 'Diarrea severa, tratamiento en curso.' },
+      { nombre: 'Chivo Enfermo 2', codigo: 'CHV012', sexo: 'hembra', raza: 'Saanen', peso: 45, fechaNacimiento: '2020-05-15', fechaIngreso: '2020-07-01', salud: 'enfermo', enfermedad: 'Brucelosis', observaciones: 'Abortos recurrentes, bajo control veterinario.' },
+      { nombre: 'Chivo Enfermo 3', codigo: 'CHV013', sexo: 'macho', raza: 'Boer', peso: 60, fechaNacimiento: '2022-02-20', fechaIngreso: '2022-04-01', salud: 'enfermo', enfermedad: 'Carbunco Sintomático', observaciones: 'Inflamación muscular, tratamiento con antibióticos.' },
+      { nombre: 'Chivo Enfermo 4', codigo: 'CHV014', sexo: 'hembra', raza: 'Alpina', peso: 40, fechaNacimiento: '2023-03-10', fechaIngreso: '2023-05-01', salud: 'enfermo', enfermedad: 'Pasteurelosis', observaciones: 'Dificultad respiratoria, bajo tratamiento.' },
+      { nombre: 'Chivo Enfermo 5', codigo: 'CHV015', sexo: 'hembra', raza: 'Criolla', peso: 38, fechaNacimiento: '2021-06-25', fechaIngreso: '2021-08-01', salud: 'enfermo', enfermedad: 'Ectima Contagioso', observaciones: 'Lesiones cutáneas, tratamiento tópico en curso.' },
+      { nombre: 'Chivo Enfermo 6', codigo: 'CHV016', sexo: 'macho', raza: 'Boer', peso: 55, fechaNacimiento: '2020-09-15', fechaIngreso: '2020-11-01', salud: 'enfermo', enfermedad: 'Lengua Azul', observaciones: 'Fiebre alta, tratamiento sintomático.' },
+      { nombre: 'Chivo Enfermo 7', codigo: 'CHV017', sexo: 'hembra', raza: 'Saanen', peso: 42, fechaNacimiento: '2022-12-01', fechaIngreso: '2023-02-01', salud: 'enfermo', enfermedad: 'Rabia', observaciones: 'Aislamiento por comportamiento agresivo.' },
+      { nombre: 'Chivo Enfermo 8', codigo: 'CHV018', sexo: 'macho', raza: 'Criolla', peso: 48, fechaNacimiento: '2021-11-10', fechaIngreso: '2022-01-01', salud: 'enfermo', enfermedad: 'Leptospirosis', observaciones: 'Ictericia, tratamiento con antibióticos.' },
+      { nombre: 'Chivo Enfermo 9', codigo: 'CHV019', sexo: 'hembra', raza: 'Alpina', peso: 37, fechaNacimiento: '2023-04-15', fechaIngreso: '2023-06-01', salud: 'enfermo', enfermedad: 'Paratuberculosis', observaciones: 'Diarrea crónica, bajo control veterinario.' },
+      { nombre: 'Chivo Enfermo 10', codigo: 'CHV020', sexo: 'macho', raza: 'Boer', peso: 65, fechaNacimiento: '2020-08-20', fechaIngreso: '2020-10-01', salud: 'enfermo', enfermedad: 'Antrax', observaciones: 'Hemorragias, tratamiento de emergencia.' }
+    ];
+
+    // Cargar los datos de los chivos en el select
+    function cargarChivos() {
+      const selectChivos = document.getElementById('selectChivos');
+      chivos.forEach((chivo, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${chivo.nombre} - ${chivo.raza} - ${chivo.peso} kg - ${chivo.salud}`;
+        selectChivos.appendChild(option);
+      });
+    }
+
+    // Mostrar detalles del chivo seleccionado
+    function verDetalles() {
+      const index = document.getElementById('selectChivos').value;
+      const chivo = chivos[index];
+
+      document.getElementById('nombreChivo').innerText = chivo.nombre;
+      document.getElementById('codigoChivo').innerText = chivo.codigo;
+      document.getElementById('sexoChivo').innerText = chivo.sexo;
+      document.getElementById('razaChivo').innerText = chivo.raza;
+      document.getElementById('pesoChivo').innerText = chivo.peso;
+      document.getElementById('fechaNacimientoChivo').innerText = chivo.fechaNacimiento;
+      document.getElementById('fechaIngresoChivo').innerText = chivo.fechaIngreso;
+      document.getElementById('saludChivo').innerText = chivo.salud;
+      document.getElementById('estadoReproductivoChivo').innerText = chivo.estadoReproductivo;
+      document.getElementById('observacionesChivo').innerText = chivo.observaciones;
+
+      if (chivo.salud === 'optimo' || chivo.salud === 'sano') {
+        document.getElementById('vacunaChivo').style.display = 'block';
+        document.getElementById('vacunaChivo').querySelector('span').innerText = chivo.vacuna || 'N/A';
+        document.getElementById('enfermedadChivo').style.display = 'none';
+      } else if (chivo.salud === 'enfermo') {
+        document.getElementById('enfermedadChivo').style.display = 'block';
+        document.getElementById('enfermedadChivo').querySelector('span').innerText = chivo.enfermedad || 'N/A';
+        document.getElementById('vacunaChivo').style.display = 'none';
+      }
+
+      document.getElementById('detallesChivo').style.display = 'block';
+
+      if (chivo.gestante) {
+        document.getElementById('btnReproduccion').style.display = 'inline-block';
+        document.getElementById('btnSaludAnimal').style.display = 'none';
+      } else {
+        document.getElementById('btnReproduccion').style.display = 'none';
+        document.getElementById('btnSaludAnimal').style.display = 'inline-block';
+      }
+    }
+
+    const puertoSaludAnimal = 8082; // Puerto fijo para Salud Animal
+    const puertoReproduccion = 8083; // Puerto fijo para Reproducción
+
+    // Redirigir a saludAnimal.html
+    function redirigirSaludAnimal() {
+      window.location.href = `http://localhost:${puertoSaludAnimal}/saludAnimal.html`;
+    }
+
+    // Redirigir a reproduccion.html
+    function redirigirReproduccion() {
+      window.location.href = `http://localhost:${puertoReproduccion}/reproduccion.html`;
+    }
+
+    // Cargar los datos al cargar la página
+    document.addEventListener('DOMContentLoaded', cargarChivos);
+  </script>
+</body>
+</html>

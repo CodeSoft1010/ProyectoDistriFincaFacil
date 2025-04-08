@@ -15,7 +15,6 @@
     "express": "^5.1.0",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
-    "proyectofincafacil": "file:",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   },
