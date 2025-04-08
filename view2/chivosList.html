@@ -148,8 +148,14 @@
 
     function redirigirReproduccion() {
         const index = document.getElementById('selectChivos').value;
-        const chivo = chivos[index];
-        window.location.href = `/reproduccion/${chivo.codigo}`;
+        //const chivo = chivos[index];
+        //window.location.href = `/reproduccion/${chivo.codigo}`;
+
+        setTimeout(() => {
+            window.location.href = 'http://localhost:8083/reproduccion.html';
+          }, 200); // 200 milisegundos
+
+
     }
 
     window.onload = cargarChivos;
