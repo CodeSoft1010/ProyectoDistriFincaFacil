@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar Sesión</title>
   <link rel="icon" href="logo.png" type="image/png">
-  <link>
+  <style>
     /* Estilos generales */
     body {
       font-family: 'Arial', sans-serif;
@@ -134,7 +134,7 @@
       font-size: 0.8rem;
       color: #aaa;
     }
-  </link>
+  </style>
 </head>
 <body>
   <div class="login-container">
@@ -185,5 +185,39 @@
       }
     }
   </script>
+
+<div id="mensaje" style="color: red; margin-top: 1rem; display: none;">Credenciales incorrectas. Por favor, inténtalo de nuevo.</div>
+
+<script>
+  async function iniciarSesion() {
+    const usuario = document.getElementById('usuario').value;
+    const contraseña = document.getElementById('contraseña').value;
+
+    try {
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usuario, contraseña })
+      });
+
+      const data = await res.json();
+      const mensajeDiv = document.getElementById('mensaje');
+
+      if (res.ok) {
+        // Redirigir al dashboard si las credenciales son correctas
+        window.location.href = 'http://localhost:8081/chivosList.html';
+      } else {
+        // Mostrar mensaje de error si las credenciales no coinciden
+        mensajeDiv.textContent = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+        mensajeDiv.style.display = 'block';
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      const mensajeDiv = document.getElementById('mensaje');
+      mensajeDiv.textContent = 'Error al conectar con el servidor.';
+      mensajeDiv.style.display = 'block';
+    }
+  }
+</script>
 </body>
 </html>
