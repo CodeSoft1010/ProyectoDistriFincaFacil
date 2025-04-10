@@ -1,6 +1,7 @@
 <!-- view/login.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Iniciar sesión</title>
@@ -18,7 +19,7 @@
       background: white;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     h2 {
@@ -47,6 +48,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <h2>Iniciar Sesión</h2>
@@ -60,17 +62,17 @@
     async function iniciarSesion() {
       const usuario = document.getElementById('usuario').value;
       const contraseña = document.getElementById('contraseña').value;
-  
+
       try {
-        const res = await fetch('/login', {
+        const res = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ usuario, contraseña })
         });
-  
+
         const data = await res.json();
         const mensajeDiv = document.getElementById('mensaje');
-  
+
         if (res.ok) {
           // Guardar datos en localStorage
           localStorage.setItem('usuario', data.usuario);
@@ -82,11 +84,12 @@
           console.log('nombre:', localStorage.getItem('nombre'));
           console.log('rol:', localStorage.getItem('rol'));
 
-          
+
           // Redirigir al nuevo puerto
-        
+
           setTimeout(() => {
-            window.location.href = 'http://localhost:8081/chivosList.html';
+            window.location.href = '/chivosList.html';
+            //window.location.href = 'http://localhost:8081/chivosList.html';
           }, 200); // 200 milisegundos
 
         } else {
@@ -98,6 +101,7 @@
       }
     }
   </script>
-  
+
 </body>
+
 </html>
