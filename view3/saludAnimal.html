@@ -2,30 +2,112 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Salud Animal</title>
+  <link rel="icon" href="logo.png" type="image/png">
   <style>
+    /* Estilos generales */
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #4CAF50, #81C784);
+      margin: 0;
+      padding: 20px;
+      color: #333;
     }
+
     h1, h2 {
-      color: #2c3e50;
+      color: #000000;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Contenedor principal */
+    .section {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Animación de entrada */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Tablas */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
+
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 10px;
       text-align: left;
     }
+
     th {
-      background-color: #f4f4f4;
+      background-color: #4CAF50;
+      color: white;
     }
-    .section {
-      margin-bottom: 40px;
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+      cursor: pointer;
+    }
+
+    /* Botón */
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 1.8rem;
+      }
+
+      th, td {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
@@ -70,33 +152,35 @@
     </table>
   </div>
 
+  <button onclick="volver()">Volver</button>
+
   <script>
     // Datos de ejemplo para vacunas
     const vacunas = [
-  { nombre: 'Vacuna Clostridial', dosis: '5 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '95%' },
-  { nombre: 'Vacuna contra Brucelosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Intramuscular', eficacia: '90%' },
-  { nombre: 'Vacuna contra Carbunco Sintomático', dosis: '3 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '92%' },
-  { nombre: 'Vacuna contra Pasteurelosis', dosis: '4 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '88%' },
-  { nombre: 'Vacuna contra Ectima Contagioso', dosis: '1 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '85%' },
-  { nombre: 'Vacuna contra Lengua Azul', dosis: '2 ml', frecuencia: 'Anual', viaAdministracion: 'Intramuscular', eficacia: '89%' },
-  { nombre: 'Vacuna contra Rabia', dosis: '1 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '98%' },
-  { nombre: 'Vacuna contra Leptospirosis', dosis: '3 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '87%' },
-  { nombre: 'Vacuna contra Paratuberculosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '90%' }
-];
+      { nombre: 'Vacuna Clostridial', dosis: '5 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '95%' },
+      { nombre: 'Vacuna contra Brucelosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Intramuscular', eficacia: '90%' },
+      { nombre: 'Vacuna contra Carbunco Sintomático', dosis: '3 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '92%' },
+      { nombre: 'Vacuna contra Pasteurelosis', dosis: '4 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '88%' },
+      { nombre: 'Vacuna contra Ectima Contagioso', dosis: '1 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '85%' },
+      { nombre: 'Vacuna contra Lengua Azul', dosis: '2 ml', frecuencia: 'Anual', viaAdministracion: 'Intramuscular', eficacia: '89%' },
+      { nombre: 'Vacuna contra Rabia', dosis: '1 ml', frecuencia: 'Anual', viaAdministracion: 'Subcutánea', eficacia: '98%' },
+      { nombre: 'Vacuna contra Leptospirosis', dosis: '3 ml', frecuencia: 'Semestral', viaAdministracion: 'Intramuscular', eficacia: '87%' },
+      { nombre: 'Vacuna contra Paratuberculosis', dosis: '2 ml', frecuencia: 'Única', viaAdministracion: 'Subcutánea', eficacia: '90%' }
+    ];
 
     // Datos de ejemplo para enfermedades
     const enfermedades = [
-  { nombre: 'Enterotoxemia', agenteCausal: 'Clostridium perfringens', sintomasClinicos: 'Diarrea, letargo', modoTransmision: 'Alimentos contaminados', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
-  { nombre: 'Brucelosis', agenteCausal: 'Brucella spp.', sintomasClinicos: 'Abortos, infertilidad', modoTransmision: 'Contacto con fluidos', impactoProduccion: 'Reducción de fertilidad', prevencion: 'Vacunación', tratamiento: 'No disponible' },
-  { nombre: 'Carbunco Sintomático', agenteCausal: 'Clostridium chauvoei', sintomasClinicos: 'Inflamación muscular', modoTransmision: 'Heridas abiertas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
-  { nombre: 'Pasteurelosis', agenteCausal: 'Pasteurella multocida', sintomasClinicos: 'Dificultad respiratoria', modoTransmision: 'Contacto directo', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
-  { nombre: 'Ectima Contagioso', agenteCausal: 'Parapoxvirus', sintomasClinicos: 'Lesiones cutáneas', modoTransmision: 'Contacto directo', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Tratamiento tópico' },
-  { nombre: 'Lengua Azul', agenteCausal: 'Orbivirus', sintomasClinicos: 'Fiebre alta', modoTransmision: 'Picaduras de insectos', impactoProduccion: 'Pérdida de peso', prevencion: 'Control de vectores', tratamiento: 'Sintomático' },
-  { nombre: 'Rabia', agenteCausal: 'Lyssavirus', sintomasClinicos: 'Comportamiento agresivo', modoTransmision: 'Mordeduras', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'No disponible' },
-  { nombre: 'Leptospirosis', agenteCausal: 'Leptospira spp.', sintomasClinicos: 'Ictericia', modoTransmision: 'Agua contaminada', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
-  { nombre: 'Paratuberculosis', agenteCausal: 'Mycobacterium avium', sintomasClinicos: 'Diarrea crónica', modoTransmision: 'Contacto con heces', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'No disponible' },
-  { nombre: 'Antrax', agenteCausal: 'Bacillus anthracis', sintomasClinicos: 'Hemorragias, fiebre alta', modoTransmision: 'Contacto con esporas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' }
-];
+      { nombre: 'Enterotoxemia', agenteCausal: 'Clostridium perfringens', sintomasClinicos: 'Diarrea, letargo', modoTransmision: 'Alimentos contaminados', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+      { nombre: 'Brucelosis', agenteCausal: 'Brucella spp.', sintomasClinicos: 'Abortos, infertilidad', modoTransmision: 'Contacto con fluidos', impactoProduccion: 'Reducción de fertilidad', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+      { nombre: 'Carbunco Sintomático', agenteCausal: 'Clostridium chauvoei', sintomasClinicos: 'Inflamación muscular', modoTransmision: 'Heridas abiertas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+      { nombre: 'Pasteurelosis', agenteCausal: 'Pasteurella multocida', sintomasClinicos: 'Dificultad respiratoria', modoTransmision: 'Contacto directo', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+      { nombre: 'Ectima Contagioso', agenteCausal: 'Parapoxvirus', sintomasClinicos: 'Lesiones cutáneas', modoTransmision: 'Contacto directo', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Tratamiento tópico' },
+      { nombre: 'Lengua Azul', agenteCausal: 'Orbivirus', sintomasClinicos: 'Fiebre alta', modoTransmision: 'Picaduras de insectos', impactoProduccion: 'Pérdida de peso', prevencion: 'Control de vectores', tratamiento: 'Sintomático' },
+      { nombre: 'Rabia', agenteCausal: 'Lyssavirus', sintomasClinicos: 'Comportamiento agresivo', modoTransmision: 'Mordeduras', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+      { nombre: 'Leptospirosis', agenteCausal: 'Leptospira spp.', sintomasClinicos: 'Ictericia', modoTransmision: 'Agua contaminada', impactoProduccion: 'Reducción de producción', prevencion: 'Vacunación', tratamiento: 'Antibióticos' },
+      { nombre: 'Paratuberculosis', agenteCausal: 'Mycobacterium avium', sintomasClinicos: 'Diarrea crónica', modoTransmision: 'Contacto con heces', impactoProduccion: 'Pérdida de peso', prevencion: 'Vacunación', tratamiento: 'No disponible' },
+      { nombre: 'Antrax', agenteCausal: 'Bacillus anthracis', sintomasClinicos: 'Hemorragias, fiebre alta', modoTransmision: 'Contacto con esporas', impactoProduccion: 'Mortalidad alta', prevencion: 'Vacunación', tratamiento: 'Antibióticos' }
+    ];
 
     // Función para cargar las vacunas en la tabla
     const cargarVacunas = (vacunaNombre) => {
@@ -156,6 +240,11 @@
         cargarEnfermedades(enfermedad);
       }
     });
+
+    // Función para volver a la página anterior
+    const volver = () => {
+      window.history.back();
+    };
   </script>
 </body>
 </html>

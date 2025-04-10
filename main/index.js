@@ -15,6 +15,8 @@ const PORT = 8080;
 
 dotenv.config();
 
+const uri = 'mongodb+srv://nuncho:nuncho12@cluster0.g63qsew.mongodb.net/fincaFacil?retryWrites=true&w=majority&appName=Cluster0';
+
 app.use(express.static(path.join(__dirname, '../view')));
 
 app.use(express.json());
@@ -24,7 +26,7 @@ app.use('/', Myroutes);
 
 app.use('/api', AuthRoutes); // ruta de login
 
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(uri)
   .then(() => {
     console.log('✅ Conexión a MongoDB exitosa');
     app.listen(PORT, () => {

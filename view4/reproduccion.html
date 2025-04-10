@@ -2,56 +2,158 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reproducción</title>
+  <link rel="icon" href="logo.png" type="image/png">
   <style>
+    /* Estilos generales */
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom, #4CAF50, #81C784);
+      margin: 0;
+      padding: 20px;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
+
     h1, h2 {
-      color: #2c3e50;
+      color: #000000;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Contenedor principal */
+    .section {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 20px;
+      animation: fadeIn 1s ease-in-out;
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    /* Animación de entrada */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Tablas */
     table {
       width: 100%;
       border-collapse: collapse;
       margin-bottom: 20px;
     }
+
     th, td {
       border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
+      padding: 10px;
+      text-align: center;
     }
+
     th {
-      background-color: #f4f4f4;
+      background-color: #4CAF50;
+      color: white;
     }
-    .form-section {
-      margin-top: 20px;
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
     }
+
+    tr:hover {
+      background-color: #ddd;
+      cursor: pointer;
+    }
+
+    /* Formularios */
     label {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 0.5rem;
       display: block;
-      margin-bottom: 5px;
     }
+
     input[type="number"] {
       width: 100px;
       padding: 5px;
       margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      text-align: center;
     }
+
+    input:focus {
+      border-color: #4CAF50;
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+      outline: none;
+    }
+
+    /* Botones */
     button {
       padding: 10px 20px;
-      background-color: #3498db;
+      background-color: #4CAF50;
       color: white;
       border: none;
+      border-radius: 5px;
+      font-size: 1rem;
       cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
     }
+
     button:hover {
-      background-color: #2980b9;
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+
+    /* Listas sin puntos */
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+      h1, h2 {
+        font-size: 1.8rem;
+      }
+
+      th, td {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Información de Reproducción</h1>
 
-  <div>
+  <div class="section">
     <h2>Detalles Generales</h2>
     <p><strong>Tiempo de Embarazo:</strong> <span id="tiempoEmbarazo"></span></p>
     <h3>Recomendaciones:</h3>
@@ -62,7 +164,7 @@
     <ul id="cuidados"></ul>
   </div>
 
-  <div class="form-section">
+  <div class="section">
     <h2>Registrar Nacimientos</h2>
     <form id="formNacimientos">
       <label for="machos">Número de machos:</label>
@@ -70,12 +172,12 @@
       
       <label for="hembras">Número de hembras:</label>
       <input type="number" id="hembras" name="hembras" min="0" required>
-      
+      <br>
       <button type="submit">Registrar</button>
     </form>
   </div>
 
-  <div class="form-section">
+  <div class="section">
     <h2>Historial de Nacimientos</h2>
     <table>
       <thead>
@@ -90,6 +192,8 @@
       </tbody>
     </table>
   </div>
+
+  <button onclick="volver()">Volver</button>
 
   <script>
     // Datos de ejemplo (pueden ser reemplazados con datos reales desde un backend)
@@ -155,6 +259,10 @@
       // Limpiar formulario
       document.getElementById('formNacimientos').reset();
     });
+
+    const volver = () => {
+      window.history.back();
+    };
   </script>
 </body>
 </html>

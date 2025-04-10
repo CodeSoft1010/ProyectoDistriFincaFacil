@@ -175,4 +175,14 @@ async function crearChivos() {
     }
 }
 
+function redirigirSaludAnimal() {
+    window.location.href = 'http://localhost:8082/saludAnimal.html';
+  }
+  
+  // Función para redirigir a reproduccion.html
+  function redirigirReproduccion() {
+    window.location.href = 'http://localhost:8083/reproduccion.html';
+  }
+
+  
 crearChivos();

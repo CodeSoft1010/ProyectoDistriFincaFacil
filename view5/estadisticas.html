@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estadísticas de Chivos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .card {
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        .card-body {
+            font-size: 1.2rem;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+
+        button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+        button:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">📊 Estadísticas de Chivos</h1>
+        <div id="estadisticas" class="row justify-content-center"></div>
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="saludChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="pesoChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="razaChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="sexoChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <button onclick="volver()">Volver</button>
+
+    <script>
+        // Datos de ejemplo de los chivos
+        const chivos = [
+            { nombre: 'Copo de Nieve', salud: 'sano', gestante: true, peso: 45, raza: 'Alpina', sexo: 'hembra' },
+            { nombre: 'Trueno', salud: 'sano', gestante: false, peso: 60, raza: 'Boer', sexo: 'macho' },
+            { nombre: 'Luna', salud: 'enfermo', gestante: false, peso: 38, raza: 'Saanen', sexo: 'hembra' },
+            { nombre: 'Rayo', salud: 'sano', gestante: false, peso: 67, raza: 'Criolla', sexo: 'macho' },
+            { nombre: 'Estrella', salud: 'sano', gestante: true, peso: 42, raza: 'Alpina', sexo: 'hembra' },
+            { nombre: 'Niebla', salud: 'muerto', gestante: false, peso: 0, raza: 'Saanen', sexo: 'hembra' },
+            { nombre: 'Sol', salud: 'sano', gestante: false, peso: 36, raza: 'Boer', sexo: 'hembra' },
+            { nombre: 'Relámpago', salud: 'enfermo', gestante: false, peso: 55, raza: 'Criolla', sexo: 'macho' },
+            { nombre: 'Brisa', salud: 'sano', gestante: false, peso: 40, raza: 'Alpina', sexo: 'hembra' },
+            { nombre: 'Tormenta', salud: 'sano', gestante: true, peso: 50, raza: 'Boer', sexo: 'hembra' }
+        ];
+
+        // Calcular estadísticas
+        const calcularEstadisticas = () => {
+            const totalChivos = chivos.length;
+            const chivosEnfermos = chivos.filter(chivo => chivo.salud === 'enfermo').length;
+            const chivosSanos = chivos.filter(chivo => chivo.salud === 'sano').length;
+            const chivosMuertos = chivos.filter(chivo => chivo.salud === 'muerto').length;
+            const chivosGestantes = chivos.filter(chivo => chivo.gestante).length;
+            const promedioPeso = (chivos.reduce((sum, chivo) => sum + chivo.peso, 0) / totalChivos).toFixed(2);
+
+            const razas = [...new Set(chivos.map(chivo => chivo.raza))];
+            const distribucionRazas = razas.map(raza => chivos.filter(chivo => chivo.raza === raza).length);
+
+            const sexos = ['hembra', 'macho'];
+            const distribucionSexos = sexos.map(sexo => chivos.filter(chivo => chivo.sexo === sexo).length);
+
+            return {
+                totalChivos,
+                chivosEnfermos,
+                chivosSanos,
+                chivosMuertos,
+                chivosGestantes,
+                promedioPeso,
+                razas,
+                distribucionRazas,
+                sexos,
+                distribucionSexos
+            };
+        };
+
+        // Mostrar estadísticas en la página
+        const mostrarEstadisticas = () => {
+            const data = calcularEstadisticas();
+            const estadisticasDiv = document.getElementById('estadisticas');
+            estadisticasDiv.innerHTML = `
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Total de Chivos</div>
+                        <div class="card-body text-center">${data.totalChivos}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Chivos Sanos</div>
+                        <div class="card-body text-center">${data.chivosSanos}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Chivos Enfermos</div>
+                        <div class="card-body text-center">${data.chivosEnfermos}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Chivos Muertos</div>
+                        <div class="card-body text-center">${data.chivosMuertos}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Chivos Gestantes</div>
+                        <div class="card-body text-center">${data.chivosGestantes}</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">Promedio de Peso</div>
+                        <div class="card-body text-center">${data.promedioPeso} kg</div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // Crear gráficos con Chart.js
+        const crearGraficos = () => {
+            const data = calcularEstadisticas();
+
+            // Gráfico de salud
+            const ctxSalud = document.getElementById('saludChart').getContext('2d');
+            new Chart(ctxSalud, {
+                type: 'pie',
+                data: {
+                    labels: ['Sanos', 'Enfermos', 'Muertos'],
+                    datasets: [{
+                        data: [data.chivosSanos, data.chivosEnfermos, data.chivosMuertos],
+                        backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de peso
+            const ctxPeso = document.getElementById('pesoChart').getContext('2d');
+            new Chart(ctxPeso, {
+                type: 'bar',
+                data: {
+                    labels: chivos.map(chivo => chivo.nombre),
+                    datasets: [{
+                        label: 'Peso (kg)',
+                        data: chivos.map(chivo => chivo.peso),
+                        backgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de razas
+            const ctxRaza = document.getElementById('razaChart').getContext('2d');
+            new Chart(ctxRaza, {
+                type: 'doughnut',
+                data: {
+                    labels: data.razas,
+                    datasets: [{
+                        data: data.distribucionRazas,
+                        backgroundColor: ['#007bff', '#ffc107', '#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+
+            // Gráfico de sexos
+            const ctxSexo = document.getElementById('sexoChart').getContext('2d');
+            new Chart(ctxSexo, {
+                type: 'pie',
+                data: {
+                    labels: data.sexos,
+                    datasets: [{
+                        data: data.distribucionSexos,
+                        backgroundColor: ['#ff6384', '#36a2eb']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    }
+                }
+            });
+        };
+
+        // Llamar a las funciones al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            mostrarEstadisticas();
+            crearGraficos();
+        });
+        const volver = () => {
+      window.history.back();
+    };
+    </script>
+</body>
+</html>
