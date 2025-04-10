@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -136,6 +137,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="login-container">
     <div class="logo">
@@ -154,17 +156,17 @@
     async function iniciarSesion() {
       const usuario = document.getElementById('usuario').value;
       const contraseña = document.getElementById('contraseña').value;
-  
+
       try {
-        const res = await fetch('/login', {
+        const res = await fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ usuario, contraseña })
         });
-  
+
         const data = await res.json();
         const mensajeDiv = document.getElementById('mensaje');
-  
+
         if (res.ok) {
           // Guardar datos en localStorage
           localStorage.setItem('usuario', data.usuario);
@@ -173,7 +175,8 @@
 
           // Redirigir al nuevo puerto
           setTimeout(() => {
-            window.location.href = 'http://localhost:8081/chivosList.html';
+            window.location.href = '/chivosList.html';
+            //window.location.href = 'http://localhost:8081/chivosList.html';
           }, 200); // 200 milisegundos
 
         } else {
@@ -220,4 +223,5 @@
   }
 </script>
 </body>
+
 </html>
